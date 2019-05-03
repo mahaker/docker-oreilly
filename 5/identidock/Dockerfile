@@ -1,7 +1,8 @@
 FROM python:latest
 
-RUN pip install Flask
+RUN pip install Flask uWSGI
 WORKDIR /app
 COPY app /app
 
-CMD [ "python", "identidock.py" ]
+CMD [ "uwsgi", "--http", "0.0.0.0:9090", "--wsgi-file", "/app/identidock.py", \
+      "--callable", "app", "--stats", "0.0.0.0:9191" ]
